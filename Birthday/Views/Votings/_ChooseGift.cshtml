@@ -1,0 +1,41 @@
+﻿@model IList<Birthday.Entities.Gift>
+
+@{
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+
+<section class="votingSection">
+    <h4 class="votingCenter">Choose Gift</h4>
+
+    <section class="giftSection">
+        @foreach (var item in Model)
+        {
+            <article id="@item.GiftId" onclick="clickItem(@item.GiftId)" class="giftItem">
+                @if (!String.IsNullOrEmpty(item.Image))
+                {
+                    <img src="@Url.Content(@item.Image)" alt="@item.GiftName" width="80" height="100">
+                }
+                @Html.DisplayFor(modelItem => item.GiftName)
+                @*@Html.DisplayFor(modelItem => item.GiftId)*@
+            </article>
+        }
+    </section>
+</section>
+
+
+@using (Html.BeginForm("Vote", "Votings", FormMethod.Post))
+{
+    @Html.Hidden("VoteId")
+    @Html.Hidden("GiftId")
+    <input id="submitbtn" type="submit" value="Submit" hidden />
+}
+
+
+<script>
+    function clickItem(item) {
+        $("#GiftId").val(item);
+        $("#VoteId").val(@id);
+        $("#submitbtn").click();
+    }
+</script>

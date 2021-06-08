@@ -1,0 +1,64 @@
+﻿@using Birthday.ViewModels
+@model Birthday.ViewModels.DetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h4 class="votingCenter">Birthday Gift Voting</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Voting.Name)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Voting.Name)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CelebratorName)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.CelebratorName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Voting.VotingStatus)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Voting.VotingStatus)
+        </dd>
+    </dl>
+</div>
+@if (!Model.AlreadyVoted && Model.Voting.VotingStatus)
+{
+    <partial name="_ChooseGift" model="Model.Gift" />
+}
+else
+{
+    <div>Voting is not active or you already voted</div>
+}
+
+<section>
+    <h4 class="votingCenter">Voting Results</h4>
+    @{
+        foreach (ResultsViewModel rvm in Model.Results)
+        {
+            <section class="results">
+                <div>@rvm.EmployeeName</div>
+                <div>@rvm.GiftName</div>
+            </section>
+        }
+        foreach (ApplicationUser rvm in Model.DidNotVote)
+        {
+            <section class="results">
+                <div>@rvm.FullName</div>
+                <div>No Vote</div>
+            </section>
+
+        }
+    }
+</section>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
